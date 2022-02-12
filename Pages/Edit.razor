@@ -1,0 +1,63 @@
+@page "/edit/{id:int}"
+@using Computer_Management.Data
+@using Computer_Management.Models
+
+<h1>Update computer "@_computerToUpdate.ComputerName"</h1>
+
+<EditForm Model="_computerToUpdate" OnValidSubmit="Updatecomputer">
+    <div class="form-group mb-3">
+        <label for="computerTitle">Title</label>
+        <InputText @bind-Value="_computerToUpdate.ComputerName" class=form-control id="computerTitle" />
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="computerContent">ComputerMAC</label>
+        <InputText @bind-Value="_computerToUpdate.ComputerMac" class=form-control id="computerContent" />
+    </div>
+    <div class="form-group mb-3">
+        <label for="computerContent">ComputerIP</label>
+        <InputText @bind-Value="_computerToUpdate.ComputerIp" class=form-control id="computerContent" />
+    </div>
+    <div class="form-group mb-3">
+        <label for="computerContent">ComputerIP</label>
+        <InputText @bind-Value="_computerToUpdate.ComputerModel" class=form-control id="computerContent" />
+    </div>
+    <div class="form-group mb-3">
+        <label for="computerContent">ComputerIP</label>
+        <InputText @bind-Value="_computerToUpdate.ComputerGroup" class=form-control id="computerContent" />
+    </div>
+    <div class="form-group mb-3">
+        <label for="computerContent">ComputerIP</label>
+        <InputText @bind-Value="_computerToUpdate.ComputerLocation" class=form-control id="computerContent" />
+    </div>
+
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <button class="btn btn-success" type="submit">Save</button>
+    <button @onclick="@(() => NavigationManager.NavigateTo("/"))" class="btn btn-secondary">Cancel</button>
+</EditForm>
+
+@code
+{
+    [Inject] CMContext CMContext { get; set; }
+    [Inject] NavigationManager NavigationManager { get; set; }
+    [Parameter] public int id { get; set; }
+
+    private Computer _computerToUpdate = null;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        _computerToUpdate = await CMContext.Computers.FindAsync(id);
+    }
+
+    private async Task Updatecomputer()
+    {
+        CMContext.Computers.Update(_computerToUpdate);
+        await CMContext.SaveChangesAsync();
+        NavigationManager.NavigateTo("/");
+    }
+}
+
+
+
