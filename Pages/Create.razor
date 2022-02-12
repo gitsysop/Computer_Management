@@ -40,7 +40,7 @@
 
 @code
 {
-    [Inject] Computer_Management_AppContext Computer_Management_AppContext { get; set; }
+    [Inject] CMContext CMContext { get; set; }
     [Inject] NavigationManager NavigationManager { get; set; }
 
     private Computer _computerToCreate = new Computer
@@ -56,8 +56,8 @@
 
     private async Task Createcomputer()
     {
-        await Computer_Management_AppContext.Computers.AddAsync(_computerToCreate);
-        await Computer_Management_AppContext.SaveChangesAsync();
+        await CMContext.Computers.AddAsync(_computerToCreate);
+        await CMContext.SaveChangesAsync();
         NavigationManager.NavigateTo("/");
     }
 }
