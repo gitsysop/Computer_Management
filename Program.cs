@@ -1,5 +1,6 @@
 using Computer_Management.Areas.Identity;
 using Computer_Management.Data;
+using Computer_Management.Models;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Components.Web;
@@ -14,6 +15,8 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 
+builder.Services.AddDbContext<CMContext>(options => 
+    options.UseSqlServer(builder.Configuration.GetConnectionString("default")));
 
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
