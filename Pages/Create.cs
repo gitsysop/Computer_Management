@@ -1,0 +1,63 @@
+@page "/create"
+@using Computer_Management.Data
+@using Computer_Management.Models
+
+<h1>Create new @*"@_computerToCreate.ComputerName"*@</h1>
+
+<EditForm Model="_computerToCreate" OnValidSubmit="Createcomputer">
+    <div class="form-group mb-3">
+        <label for="computerName">Name</label>
+        <InputText @bind-Value="_computerToCreate.ComputerName" class=form-control id="computerTitle" />
+    </div>
+
+    <div class="form-group mb-3">
+        <label for="computerMac">MAC</label>
+        <InputText @bind-Value="_computerToCreate.ComputerMac" class=form-control id="computerContent" />
+    </div>
+    <div class="form-group mb-3">
+        <label for="computerIp">IP</label>
+        <InputText @bind-Value="_computerToCreate.ComputerIp" class=form-control id="computerContent" />
+    </div>
+    <div class="form-group mb-3">
+        <label for="computerModel">Model</label>
+        <InputText @bind-Value="_computerToCreate.ComputerModel" class=form-control id="computerContent" />
+    </div>
+    <div class="form-group mb-3">
+        <label for="computerGroup">Group</label>
+        <InputText @bind-Value="_computerToCreate.ComputerGroup" class=form-control id="computerContent" />
+    </div>
+    <div class="form-group mb-3">
+        <label for="computerLocation">Location</label>
+        <InputText @bind-Value="_computerToCreate.ComputerLocation" class=form-control id="computerContent" />
+    </div>
+
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <button class="btn btn-success" type="submit">Save</button>
+    <button @onclick="@(() => NavigationManager.NavigateTo("/"))" class="btn btn-secondary">Cancel</button>
+</EditForm>
+
+@code
+{
+    [Inject] CMContext CMContext { get; set; }
+    [Inject] NavigationManager NavigationManager { get; set; }
+
+    private Computer _computerToCreate = new Computer
+    {
+        ComputerName = "",
+        ComputerMac = "",
+        ComputerIp = "",
+        ComputerModel = "",
+        ComputerGroup = "",
+        ComputerLocation = ""
+
+    };
+
+    private async Task Createcomputer()
+    {
+        await CMContext.Computers.AddAsync(_computerToCreate);
+        await CMContext.SaveChangesAsync();
+        NavigationManager.NavigateTo("/");
+    }
+}
